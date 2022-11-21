@@ -1,16 +1,31 @@
 const { application } = require('express');
 const express = require('express');
 
-
 const app = express();
 
-app.use('/api/stuff', (req, res, next) => {
+app.use(express.json());
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    next();
+  });
+
+app.post('/api/stuff', (req, res, next) => {
+  console.log(req.body);
+  res.status(201).json({
+    message:'Thing saved sucessfully !'
+  });
+});
+
+app.get('/api/stuff', (req, res, next) => {
     const stuff = [
       {
         _id: 'oeihfzeoi',
         title: 'My first thing',
         description: 'All of the info about my first thing',
-        imageUrl: '',
+        imageUrl: 'https://cdn.pixabay.com/photo/2014/12/27/15/31/camera-581126_960_720.jpg',
         price: 4900,
         userId: 'qsomihvqios',
       },
@@ -18,8 +33,8 @@ app.use('/api/stuff', (req, res, next) => {
         _id: 'oeihfzeomoihi',
         title: 'My second thing',
         description: 'All of the info about my second thing',
-        imageUrl: '',
-        price: 2900,
+        imageUrl: 'https://cdn.pixabay.com/photo/2014/12/27/15/31/camera-581126_960_720.jpg',
+        price: 3999,
         userId: 'qsomihvqios',
       },
     ];
