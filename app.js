@@ -11,7 +11,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const Thing = require('./models/thing');
+const stuffRoutes = require('./routes/stuff');
 
 const app = express();
 app.use(express.json());
