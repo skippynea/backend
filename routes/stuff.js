@@ -8,6 +8,7 @@ const Thing = require('../models/thing');
 
 router.post('/', stuffCtrl.createThing);
 
+
 router.get('/:id', (req, res, next) => {
   Thing.findOne({
     _id: req.params.id
