@@ -12,6 +12,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
 
 const app = express();
 app.use(express.json());
@@ -39,22 +40,5 @@ app.use('/api/stuff', stuffRoutes);
 
 module.exports = app;
 
-/* app.use((req, res, next)=>{
-    console.log('Request received !');
-    next();
-})
 
-app.use((req, res, next)=>{
-    res.status(201);
-    next();
-})
-
-app.use((req, res, next)=>{
-    res.json({message:'your request was successful !' })
-    next();
-})
-
-app.use((req, res, next)=>{
-    console.log('Response sent successfully !');
-}) */
 
