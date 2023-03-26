@@ -3,6 +3,7 @@
 const Thing = require('../models/thing');
 
 exports.createThing = (req, res, next) => {
+    console.log(req.body);
   const thing = new Thing({
     title: req.body.title,
     description: req.body.description,
@@ -19,7 +20,7 @@ exports.createThing = (req, res, next) => {
   ).catch(
     (error) => {
       res.status(400).json({
-        error: error
+        error: 'error !'
       });
     }
   );
@@ -66,20 +67,34 @@ exports.modifyThing = (req, res, next) => {
 };
 
 exports.deleteThing = (req, res, next) => {
-  Thing.deleteOne({_id: req.params.id}).then(
-    () => {
-      res.status(200).json({
-        message: 'Deleted!'
-      });
-    }
-  ).catch(
-    (error) => {
-      res.status(400).json({
-        error: error
-      });
-    }
-  );
-};
+    Thing.findOne({ _id: req.params.id }).then(
+      (thing) => {
+        if (!thing) {
+          return res.status(404).json({
+            error: new Error('No such Thing!')
+          });
+        }
+        if (thing.userId !== req.auth.userId) {
+          return res.status(401).json({
+            error: new Error('Unauthorized request!')
+          });
+        }
+        Thing.deleteOne({_id: req.params.id}).then(
+          () => {
+            res.status(200).json({
+              message: 'Deleted!'
+            });
+          }
+        ).catch(
+          (error) => {
+            res.status(400).json({
+              error: error
+            });
+          }
+        );
+      }
+    );
+  };
 
 exports.getAllStuff = (req, res, next) => {
   Thing.find().then(
